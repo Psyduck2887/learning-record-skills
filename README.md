@@ -2,12 +2,20 @@
 
 一组用于读写个人学习记录的 Agent Skills。
 
+## 新用户建议
+
+如果你第一次使用这类 skill，建议先让 Codex 读取这个仓库，并让它根据你的本地环境总结安装和配置步骤。可以直接使用下面这段 prompt：
+
+```text
+请阅读这个仓库的 README.md、skills/learning-record-read/SKILL.md、skills/learning-record-write/SKILL.md 和 examples/learning_record/，然后用中文告诉我：这个仓库是做什么的、我应该把 skill 安装到哪里、如何配置 LEARNING_RECORD_REPO，以及如何创建自己的 learning_record 仓库。
+```
+
 这个仓库包含两个 skill：
 
 - `learning-record-read`：按主题读取学习记录，并加载到当前 Agent 上下文。
 - `learning-record-write`：把已经解决的问题追加成一条轻量学习笔记。
 
-这两个 skill 不绑定固定主题、固定目录结构、GitHub 账号或本机路径。真正的主题、别名、笔记文件和读写规则，都由使用者自己的 `learning_record` 仓库定义。
+这两个 skill 不绑定固定主题、具体笔记文件、GitHub 账号或本机路径；但你的 `learning_record` 仓库需要用 `README.md` 声明主题、别名和读写规则。
 
 ## 仓库结构
 
@@ -27,7 +35,7 @@ examples/
 
 ## 安装
 
-把两个 skill 目录复制到你的 Agent runtime 使用的 skill 目录。
+把两个 skill 目录复制到你的 Agent 运行环境使用的 skill 目录。这里的运行环境，指的是 Codex 或其他 Agent 工具读取 skill 的位置。
 
 常见示例：
 
@@ -37,14 +45,14 @@ cp -R skills/learning-record-read ~/.agents/skills/
 cp -R skills/learning-record-write ~/.agents/skills/
 ```
 
-有些 runtime 使用 `~/.codex/skills`、项目内 `.agents/skills`，或其他自定义目录。如果你的 runtime 文档指定了不同位置，就把这两个目录复制到对应位置。
+有些 Agent 工具使用 `~/.codex/skills`、项目内 `.agents/skills`，或其他自定义目录。如果你的工具文档指定了不同位置，就把这两个目录复制到对应位置。
 
 安装后，重新启动一个 Agent 会话，并让它列出或使用 `learning-record-read` 和 `learning-record-write`。skill 名称需要保持小写和连字符格式。
 
-如果你的 runtime 不支持列出已安装 skill，可以用这个 smoke test：
+如果你的 Agent 工具不支持列出已安装 skill，可以用下面的验证提示词。把 `/path/to/this/repo` 换成当前仓库所在路径：
 
 ```text
-使用 learning-record-read 从示例 learning_record 仓库读取 TypeScript 学习记录。
+使用 learning-record-read，从 /path/to/this/repo/examples/learning_record 读取 TypeScript 学习记录。
 ```
 
 ## 配置
@@ -59,7 +67,7 @@ export LEARNING_RECORD_REPO=/path/to/learning_record
 
 如果没有设置这个环境变量，skill 会要求 Agent 先询问用户本地 `learning_record` 仓库路径。
 
-如果想长期生效，可以把这行 `export` 写入 `.zshrc`、`.bashrc` 等 shell 启动文件。注意：有些 Agent runtime 不一定继承交互式 shell 的环境变量，所以需要在启动 Agent 的同一个环境里确认变量是否可见。
+如果想长期生效，可以把这行 `export` 写入 `.zshrc`、`.bashrc` 等 shell 启动文件。注意：有些 Agent 工具不一定继承交互式 shell 的环境变量，所以需要在启动 Agent 的同一个环境里确认变量是否可见。
 
 如果 Agent 读不到 `LEARNING_RECORD_REPO`，也可以直接在 prompt 里告诉它 `learning_record` 仓库路径。两个 skill 都会在路径缺失时主动询问。
 
@@ -112,9 +120,28 @@ export LEARNING_RECORD_REPO=/path/to/learning_record
 5. 设置 `LEARNING_RECORD_REPO`。
 6. 让 Agent 使用 `learning-record-read` 或 `learning-record-write`。
 
+如果你只是想先跑通最小示例，可以复制模板：
+
+```sh
+cp -R examples/learning_record /path/to/my_learning_record
+export LEARNING_RECORD_REPO=/path/to/my_learning_record
+```
+
+然后让 Agent 读取示例主题：
+
+```text
+使用 learning-record-read 读取 TypeScript 学习记录。
+```
+
+解决一个 TypeScript 问题后，可以让 Agent 写入记录：
+
+```text
+使用 learning-record-write，把刚才解决的 TypeScript 问题记录到学习记录里。不要提交 Git。
+```
+
 ## 常见问题
 
-- 找不到 skill：确认 runtime 的 skill 目录里存在 `learning-record-read/SKILL.md` 和 `learning-record-write/SKILL.md`。
+- 找不到 skill：确认 Agent 工具的 skill 目录里存在 `learning-record-read/SKILL.md` 和 `learning-record-write/SKILL.md`。
 - 找不到学习记录仓库：在启动 Agent 的环境里设置 `LEARNING_RECORD_REPO`，或直接在 prompt 里提供路径。
 - 找不到主题：把主题和别名添加到 `learning_record` 根目录的 `README.md`。
 - 写入规则不清楚：在主题 `README.md` 里明确目标笔记文件、笔记格式、重复检查规则和可选验证命令。
