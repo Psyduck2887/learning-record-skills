@@ -1,18 +1,18 @@
 # Learning Record
 
-This is an example learning record repository. Copy this structure into your own repository and adjust the topics for your needs.
+这是一个示例学习记录仓库。你可以复制这个结构，再按自己的需要调整主题。
 
-## Topics
+## 主题列表
 
-| Topic | Aliases | Directory |
+| 主题 | 别名 | 目录 |
 |---|---|---|
 | TypeScript | TS, typescript | `typescript/` |
 
-## How Agents Should Use This Repository
+## Agent 使用规则
 
-1. Match the user's requested topic against the topic names and aliases above.
-2. Open the matched topic directory.
-3. Read that topic's `README.md`.
-4. Follow the topic-level read and write rules exactly.
+1. 根据用户请求的主题，在上面的主题名称和别名中查找匹配项。
+2. 打开匹配到的主题目录。
+3. 读取该主题目录下的 `README.md`。
+4. 严格按照主题级别的读取和写入规则执行。
 
-If a topic is not listed here, say that this repository does not currently define that topic.
+如果主题列表里没有用户请求的主题，说明这个仓库当前没有定义该主题。

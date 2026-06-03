@@ -1,15 +1,15 @@
 # Learning Record Skills
 
-Two portable agent skills for reading and writing lightweight learning notes from a user-owned `learning_record` repository.
+一组用于读写个人学习记录的 Agent Skills。
 
-This repository contains:
+这个仓库包含两个 skill：
 
-- `learning-record-read`: loads notes for a requested topic into the current agent context.
-- `learning-record-write`: appends a compact note for a solved learning problem.
+- `learning-record-read`：按主题读取学习记录，并加载到当前 Agent 上下文。
+- `learning-record-write`：把已经解决的问题追加成一条轻量学习笔记。
 
-The skills do not require a specific note topic, directory layout, GitHub account, or local machine path. Your own `learning_record` repository defines topics, aliases, and per-topic read/write rules.
+这两个 skill 不绑定固定主题、固定目录结构、GitHub 账号或本机路径。真正的主题、别名、笔记文件和读写规则，都由使用者自己的 `learning_record` 仓库定义。
 
-## Repository Layout
+## 仓库结构
 
 ```text
 skills/
@@ -25,11 +25,11 @@ examples/
       notes.md
 ```
 
-## Install
+## 安装
 
-Copy the skill directories into the skill location used by your agent runtime.
+把两个 skill 目录复制到你的 Agent runtime 使用的 skill 目录。
 
-Common examples:
+常见示例：
 
 ```sh
 mkdir -p ~/.agents/skills
@@ -37,90 +37,92 @@ cp -R skills/learning-record-read ~/.agents/skills/
 cp -R skills/learning-record-write ~/.agents/skills/
 ```
 
-Some runtimes use `~/.codex/skills`, a project-local `.agents/skills`, or another configured skill directory. If your runtime documents a different location, copy the two folders there instead.
+有些 runtime 使用 `~/.codex/skills`、项目内 `.agents/skills`，或其他自定义目录。如果你的 runtime 文档指定了不同位置，就把这两个目录复制到对应位置。
 
-To confirm installation, start a fresh agent session and ask it to list or use `learning-record-read` and `learning-record-write`. The skill names must stay lowercase and hyphenated.
+安装后，重新启动一个 Agent 会话，并让它列出或使用 `learning-record-read` 和 `learning-record-write`。skill 名称需要保持小写和连字符格式。
 
-If your runtime cannot list installed skills, use a smoke-test prompt instead:
+如果你的 runtime 不支持列出已安装 skill，可以用这个 smoke test：
 
 ```text
-Use learning-record-read to read TypeScript learning records from the example learning_record repository.
+使用 learning-record-read 从示例 learning_record 仓库读取 TypeScript 学习记录。
 ```
 
-## Configure
+## 配置
 
-Set `LEARNING_RECORD_REPO` to the absolute path of your own learning record repository.
+设置 `LEARNING_RECORD_REPO`，让 skill 知道你的学习记录仓库在哪里。
 
-Example:
+示例：
 
 ```sh
 export LEARNING_RECORD_REPO=/path/to/learning_record
 ```
 
-If the variable is not set, the skills instruct the agent to ask for the repository path before reading or writing.
+如果没有设置这个环境变量，skill 会要求 Agent 先询问用户本地 `learning_record` 仓库路径。
 
-For persistent shell configuration, add the export line to your shell startup file, such as `.zshrc` or `.bashrc`. Agent runtimes do not always inherit interactive shell variables, so verify the value inside the same environment that launches the agent.
+如果想长期生效，可以把这行 `export` 写入 `.zshrc`、`.bashrc` 等 shell 启动文件。注意：有些 Agent runtime 不一定继承交互式 shell 的环境变量，所以需要在启动 Agent 的同一个环境里确认变量是否可见。
 
-If your agent does not inherit `LEARNING_RECORD_REPO`, provide the repository path in the prompt. Both skills are written to ask for the path when the variable is missing.
+如果 Agent 读不到 `LEARNING_RECORD_REPO`，也可以直接在 prompt 里告诉它 `learning_record` 仓库路径。两个 skill 都会在路径缺失时主动询问。
 
-## Learning Record Format
+## learning_record 仓库格式
 
-Your learning record repository should have a root `README.md` that lists supported topics and aliases. Each topic directory should have its own `README.md` that describes what files to read and how new notes should be written. Paths in topic rules should be relative to the topic directory unless the topic README says otherwise.
+你的 `learning_record` 仓库需要有一个根目录 `README.md`，用于声明支持哪些主题和别名。每个主题目录也需要有自己的 `README.md`，用于声明读取哪些文件、写入哪个文件、笔记格式是什么。
 
-See `examples/learning_record/` for a minimal working template.
+主题规则里的路径默认相对于该主题目录，除非主题 `README.md` 明确说明其他规则。
 
-Root `README.md` template:
+可以参考 `examples/learning_record/`，它是一个最小可用模板。
+
+根目录 `README.md` 模板：
 
 ```md
 # Learning Record
 
-## Topics
+## 主题列表
 
-| Topic | Aliases | Directory |
+| 主题 | 别名 | 目录 |
 |---|---|---|
 | TypeScript | TS, typescript | `typescript/` |
 ```
 
-Topic `README.md` template:
+主题目录 `README.md` 模板：
 
 ```md
-# Topic Name
+# 主题名称
 
-## Read Rules
+## 读取规则
 
-When reading this topic, load:
+读取这个主题时，加载：
 
 1. `notes.md`
 
-## Write Rules
+## 写入规则
 
-Target file:
+目标文件：
 
 `notes.md`
 
-Describe the note format, duplicate-check rule, and any validation command.
+说明笔记格式、重复检查规则，以及可选的验证命令。
 ```
 
-## Recommended Workflow
+## 推荐流程
 
-1. Create your own `learning_record` repository.
-2. Add a root `README.md` with topic aliases.
-3. Add one directory per topic.
-4. In each topic directory, add a `README.md` with read/write rules.
-5. Set `LEARNING_RECORD_REPO`.
-6. Ask your agent to use `learning-record-read` or `learning-record-write`.
+1. 创建你自己的 `learning_record` 仓库。
+2. 在根目录 `README.md` 里写主题列表和别名。
+3. 每个主题建一个目录。
+4. 每个主题目录里写一个 `README.md`，声明读写规则。
+5. 设置 `LEARNING_RECORD_REPO`。
+6. 让 Agent 使用 `learning-record-read` 或 `learning-record-write`。
 
-## Troubleshooting
+## 常见问题
 
-- Skill is not found: confirm that your runtime's skill directory contains `learning-record-read/SKILL.md` and `learning-record-write/SKILL.md`.
-- Repository path is not found: set `LEARNING_RECORD_REPO` in the environment that launches the agent, or include the path in your prompt.
-- Topic is not found: add the topic and aliases to the root `README.md` of your learning record repository.
-- Write rules are unclear: make the topic `README.md` name the target note file, note format, duplicate-check rule, and optional validation command.
-- Duplicate checks vary by agent: define a stricter duplicate rule in the topic `README.md` when you need more deterministic behavior.
+- 找不到 skill：确认 runtime 的 skill 目录里存在 `learning-record-read/SKILL.md` 和 `learning-record-write/SKILL.md`。
+- 找不到学习记录仓库：在启动 Agent 的环境里设置 `LEARNING_RECORD_REPO`，或直接在 prompt 里提供路径。
+- 找不到主题：把主题和别名添加到 `learning_record` 根目录的 `README.md`。
+- 写入规则不清楚：在主题 `README.md` 里明确目标笔记文件、笔记格式、重复检查规则和可选验证命令。
+- 重复检查结果不稳定：如果你需要更确定的行为，在主题 `README.md` 里定义更严格的重复判断规则。
 
-## Safety Notes
+## 安全说明
 
-- Review generated notes before publishing them.
-- Do not store secrets, private credentials, or personal tokens in learning notes.
-- Keep personal machine paths out of shared templates.
-- Git commit and push are optional. The write skill only performs them when the user explicitly asks for repository persistence.
+- 发布学习记录前，先检查 Agent 生成的内容。
+- 不要把密钥、凭证、token 或其他敏感信息写入学习记录。
+- 共享模板时不要包含个人机器路径。
+- Git commit 和 push 是可选操作。`learning-record-write` 只有在用户明确要求 Git 持久化时才会执行。

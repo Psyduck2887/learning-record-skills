@@ -1,39 +1,39 @@
-# TypeScript Learning Notes
+# TypeScript 学习记录
 
-## Read Rules
+## 读取规则
 
-When reading this topic, load:
+读取这个主题时，加载：
 
 1. `notes.md`
 
-After reading, output:
+读取完成后，输出：
 
 ```text
-Loaded TypeScript learning records.
+已读取 TypeScript 学习记录。
 ```
 
-## Write Rules
+## 写入规则
 
-Target file:
+目标文件：
 
 ```text
 notes.md
 ```
 
-Append each new note with a level-2 heading:
+每条新记录使用二级标题开头：
 
 ```md
-## Short note title
+## 简短笔记标题
 
-Compact explanation of the solved issue.
+对已经解决的问题做紧凑说明。
 ```
 
-Keep each note focused on one solved issue. Use lists, commands, or code blocks only when they make the note easier to reuse.
+每条笔记只记录一个已经解决的问题。只有在确实更容易复用时，才使用列表、命令或代码块。
 
-Before appending, check whether `notes.md` already contains a similar note. If similar content exists, do not duplicate it.
+追加前，先检查 `notes.md` 是否已经包含类似笔记。如果已有类似内容，不要重复追加。
 
-In this example, separate notes with one blank line. You can choose a different spacing rule in your own topic README.
+这个示例使用一个空行分隔不同笔记。你可以在自己的主题 `README.md` 里定义其他间距规则。
 
-## Validation
+## 验证
 
-This example topic has no validation command. If your topic needs one, document the exact command here.
+这个示例主题没有验证命令。如果你的主题需要验证，请在这里写明具体命令。

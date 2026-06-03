@@ -1,5 +1,5 @@
-# TypeScript Notes
+# TypeScript 笔记
 
-## Async Iteration Over Streams
+## 用 for await 读取异步流
 
-When reading an async iterable stream, prefer `for await...of` so each chunk is handled in arrival order without manually managing iterator state.
+读取 async iterable stream 时，优先使用 `for await...of`，这样可以按 chunk 到达顺序处理数据，不需要手动维护 iterator 状态。

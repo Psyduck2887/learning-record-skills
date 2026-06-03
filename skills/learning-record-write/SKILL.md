@@ -1,50 +1,50 @@
 ---
 name: learning-record-write
-description: Append a compact learning note for an already solved problem to a user-configured learning_record repository.
+description: 将已经解决的问题追加为轻量学习笔记，写入用户配置的 learning_record 仓库。
 ---
 
 # Learning Record Write
 
-Write a lightweight note about a solved learning problem into a user-owned `learning_record` repository. Keep notes concise and practical. Do not create long retrospectives unless the user asks for that.
+用于把本次已经解决的问题写入用户自己的 `learning_record` 仓库。记录应保持轻量、具体、可复用；除非用户明确要求，不写长篇复盘。
 
-## Repository Path
+## 仓库路径
 
-Use the repository path from `LEARNING_RECORD_REPO`.
+优先使用 `LEARNING_RECORD_REPO` 指向的仓库路径。
 
-If `LEARNING_RECORD_REPO` is not set, ask the user for the local path to their `learning_record` repository before continuing.
+如果没有设置 `LEARNING_RECORD_REPO`，先询问用户本地 `learning_record` 仓库路径，再继续执行。
 
-Do not assume a default machine path, GitHub account, or repository location.
+不要假设默认本机路径、GitHub 账号或仓库位置。
 
-## Workflow
+## 工作流程
 
-1. If the user did not specify a topic, ask which topic to write to.
-2. Resolve the learning record repository path from `LEARNING_RECORD_REPO` or the user-provided path.
-3. Read the repository root `README.md`.
-4. Use the root `README.md` to map the requested topic or alias to a topic directory.
-5. Read the topic directory `README.md`.
-6. Follow that topic `README.md` exactly to find the target note file and formatting rules.
-7. Draft one compact note from the already solved problem in the current conversation.
-8. Check the target note file for similar existing content. Treat content as similar when it records the same topic, same problem, and same key conclusion, command, or configuration.
-9. If a similar note already exists, do not append a duplicate. Tell the user similar content already exists.
-10. If no similar note exists, append the new note according to the topic rules.
-11. Run any validation required by the topic `README.md`.
-12. Commit or push only if the user explicitly asks for Git persistence.
+1. 如果用户没有指定主题，先询问要写入哪个主题。
+2. 从 `LEARNING_RECORD_REPO` 或用户提供的路径中确定学习记录仓库位置。
+3. 读取仓库根目录 `README.md`。
+4. 根据根目录 `README.md`，把用户请求的主题或别名映射到主题目录。
+5. 读取主题目录下的 `README.md`。
+6. 严格按照主题 `README.md` 的规则，找到目标笔记文件和写入格式。
+7. 根据当前对话中已经解决的问题，整理一条紧凑的新记录。
+8. 写入前检查目标笔记文件是否已有相似内容。判断相似时，重点看是否记录了同一主题、同一问题、同一关键结论、命令或配置。
+9. 如果已有相似记录，不要重复追加，只告诉用户已有类似内容。
+10. 如果没有重复内容，按照主题规则追加新记录。
+11. 运行主题 `README.md` 要求的验证命令；如果没有定义验证命令，就不额外运行。
+12. 只有在用户明确要求 Git 持久化时，才执行 commit 或 push。
 
-## Topic Rules
+## 主题规则
 
-Topic names, aliases, target note files, formatting rules, validation commands, and commit conventions are owned by the user's `learning_record` repository. Do not hard-code topics in this skill.
+主题名称、别名、目标笔记文件、格式规则、验证命令和提交约定都由用户自己的 `learning_record` 仓库定义。不要在这个 skill 里硬编码具体主题。
 
-If the requested topic does not exist in the root `README.md`, say that the repository does not currently define that topic. Do not guess another path.
+如果根目录 `README.md` 没有定义用户请求的主题，说明该仓库当前没有这个主题。不要猜测其他路径。
 
-## Git Rules
+## Git 规则
 
-Git operations are optional and must follow the user's request and repository policy.
+Git 操作是可选的，必须遵循用户请求和仓库自己的约定。
 
-If the user asks to commit:
+如果用户要求提交：
 
-1. Check `git status --short`.
-2. Run `git pull --ff-only` before committing if the repository has a remote.
-3. Commit only the intended learning-record files.
-4. Use a commit message that clearly describes the new note.
+1. 先检查 `git status --short`。
+2. 如果仓库配置了 remote，提交前先运行 `git pull --ff-only`。
+3. 只提交本次学习记录相关文件。
+4. commit message 要清楚说明新增了什么学习记录。
 
-If pull, commit, push, or authentication fails, stop and explain the reason. Do not apply machine-specific proxy workarounds unless the user asks for them.
+如果 pull、commit、push 或认证失败，停止并说明原因。不要套用任何机器专属的代理或网络绕过方案，除非用户明确要求。

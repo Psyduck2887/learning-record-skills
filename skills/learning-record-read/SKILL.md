@@ -1,42 +1,42 @@
 ---
 name: learning-record-read
-description: Read topic-specific learning notes from a user-configured learning_record repository and load them into the current agent context.
+description: 从用户配置的 learning_record 仓库中读取指定主题的学习记录，并加载到当前 Agent 上下文。
 ---
 
 # Learning Record Read
 
-Read historical learning notes for a requested topic into the current agent context. This skill only reads files. It does not summarize, analyze, edit, or write notes.
+用于把指定主题的历史学习记录读取到当前 Agent 上下文。这个 skill 只负责读取文件，不负责总结、分析、编辑或写入。
 
-## Repository Path
+## 仓库路径
 
-Use the repository path from `LEARNING_RECORD_REPO`.
+优先使用 `LEARNING_RECORD_REPO` 指向的仓库路径。
 
-If `LEARNING_RECORD_REPO` is not set, ask the user for the local path to their `learning_record` repository before continuing.
+如果没有设置 `LEARNING_RECORD_REPO`，先询问用户本地 `learning_record` 仓库路径，再继续执行。
 
-Do not assume a default machine path, GitHub account, or repository location.
+不要假设默认本机路径、GitHub 账号或仓库位置。
 
-## Workflow
+## 工作流程
 
-1. If the user did not specify a topic, ask which topic to read.
-2. Resolve the learning record repository path from `LEARNING_RECORD_REPO` or the user-provided path.
-3. Read the repository root `README.md`.
-4. Use the root `README.md` to map the requested topic or alias to a topic directory.
-5. Read the topic directory `README.md`.
-6. Follow that topic `README.md` exactly to decide which note files to load.
-7. After loading the required files, output only a short confirmation.
+1. 如果用户没有指定主题，先询问要读取哪个主题。
+2. 从 `LEARNING_RECORD_REPO` 或用户提供的路径中确定学习记录仓库位置。
+3. 读取仓库根目录 `README.md`。
+4. 根据根目录 `README.md`，把用户请求的主题或别名映射到主题目录。
+5. 读取主题目录下的 `README.md`。
+6. 严格按照主题 `README.md` 的规则，决定需要加载哪些笔记文件。
+7. 加载完成后，只输出简短确认语。
 
-## Topic Rules
+## 主题规则
 
-Topic names, aliases, note filenames, and read order are owned by the user's `learning_record` repository. Do not hard-code topics in this skill.
+主题名称、别名、笔记文件名和读取顺序都由用户自己的 `learning_record` 仓库定义。不要在这个 skill 里硬编码具体主题。
 
-If the requested topic does not exist in the root `README.md`, say that the repository does not currently define that topic. Do not guess another path.
+如果根目录 `README.md` 没有定义用户请求的主题，说明该仓库当前没有这个主题。不要猜测其他路径。
 
-## Output Rules
+## 输出规则
 
-After successfully reading a topic, output a short confirmation such as:
+成功读取主题后，输出简短确认语，例如：
 
 ```text
-Loaded the requested learning record.
+已读取请求的学习记录。
 ```
 
-If the topic `README.md` defines an exact confirmation sentence, use that sentence instead.
+如果主题 `README.md` 定义了精确确认语，优先使用主题 `README.md` 里的确认语。
